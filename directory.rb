@@ -1,13 +1,27 @@
 $students = []
+$cohort = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+$country = []
 
 def input_students
   puts "Please enter the names of the students"
   puts "Hit return twice to finish"
   name = gets.chomp
-  while !name.empty? do
-    $students << {name: name, cohort: :november}
+  puts "Which cohort do they belong to?"
+  cohort = gets.chomp
+  puts "Country of origin?"
+  country = gets.chomp
+
+
+  until name.empty? do
+    $students << {name: name, cohort: cohort, country: country}
     puts "There are now #{$students.count} students"
     name = gets.chomp
+    puts "Please enter the name"
+    name = gets.chomp
+    puts "Which cohort do they belong to?"
+    cohort = gets.chomp
+    puts "Country of origin?"
+    country = gets.chomp
   end
   $students
 end
@@ -20,9 +34,9 @@ def print_name_starting_with
 end
 
 def print_name_short
-  puts "Printing students with names under 12 characters"
-  puts "..........."
-  puts $students.select { |student| student[:name].size <13 }
+  puts "By what length would you like to filter students?"
+  size = gets.chomp.to_i
+  puts $students.select { |student| student[:name].size <= size }
 end
 
 def print_header
