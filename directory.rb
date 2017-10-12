@@ -1,28 +1,41 @@
 $students = []
-$cohort = []
+$cohort = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
 $country = []
+
+# cohort = gets.chomp.capitalize
+#   if cohort.to_sym != $cohort.each
+#     puts "Please enter a correct month. e.g. January"
+#   end
+
 
 def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
-  puts "Please enter the names of the students"
+  puts "Please enter the name"
   name = gets.chomp
-  puts "Which cohort do they belong to?"
-  cohort = gets.chomp
-  puts "Country of origin?"
-  country = gets.chomp
-
-
-  until name.empty? do
-    $students << {name: name, cohort: cohort, country: country}
-    puts "There are now #{$students.count} students"
-    name = gets.chomp
-    puts "Please enter the name"
-    name = gets.chomp
+  # puts "Which cohort do they belong to?"
+  # cohort = gets.chomp
+  # puts "Country of origin?"
+  # country = gets.chomp
+  while !name.empty? do
     puts "Which cohort do they belong to?"
-    cohort = gets.chomp
+    cohort = gets.chomp.capitalize.to_sym
+    if cohort.empty?
+      cohort = Time.new.strftime("%B").to_sym
+    else
+      until $cohort.include?(cohort)
+        puts "Please enter a correct month e.g. January"
+        cohort = gets.chomp.capitalize.to_sym
+    end
+  end
     puts "Country of origin?"
     country = gets.chomp
+
+    $students << {name: name, cohort: cohort, country: country}
+      puts "There are now #{$students.count} students"
+      puts
+      puts "Please enter another name"
+      name = gets.chomp
   end
   $students
 end
@@ -58,11 +71,11 @@ def print_footer(students)
 end
 
 
-
-
 students = input_students
 puts print_header
+puts
 puts print(students)
+puts
 puts print_footer(students)
 puts "-----------------------------------------------------------"
 puts
