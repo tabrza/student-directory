@@ -11,7 +11,7 @@ $country = []
 def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
-  puts "Please enter the name"
+  puts "Please enter the name (if no name is entered, will move forward to summary)"
   name = gets.chomp
   # puts "Which cohort do they belong to?"
   # cohort = gets.chomp
@@ -26,8 +26,8 @@ def input_students
       until $cohort.include?(cohort)
         puts "Please enter a correct month e.g. January"
         cohort = gets.chomp.capitalize.to_sym
+      end
     end
-  end
     puts "Country of origin?"
     country = gets.chomp
 
@@ -55,14 +55,38 @@ def print_name_short
   puts $students.select { |student| student[:name].size <= size }
 end
 
+def print_by_cohort
+  #puts "List by cohort:"
+  #month = gets.chomp.capitalize.to_sym
+  #puts "The following list is filtered per the month of #{month}:".center(50)
+  # puts $cohort.map { |cohort| cohort[:cohort.to_s] == month}
+
+  #   cohorts_list = []
+  # $students.map do |student|
+  #   cohorts_list << student[:cohort] if !cohorts_list.include?(student[:cohort])
+  # end
+  # # for each cohort
+  # cohorts_list.each do |cohort|
+  #   # iterate over students list and print students from that cohort
+  #   $students.each_with_index {|student,index| puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)".center(60) if student[:cohort] == cohort}
+  # end
+end
+
 def print_header
   puts "The students of this Academy".center(50)
   puts "-----------".center(50)
 end
 
-def print(students)
-  students.each_with_index do |student, index|
-    puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)"
+def print
+  # students.each_with_index do |student, index|
+  #   puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)"
+  # end
+  list = []
+  $students.map do |student|
+    list << student[:cohort] if !list.include?(student[:cohort])
+  end
+  list.each do |cohort|
+    $students.each_with_index {|student,index| puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)".center(60) if student[:cohort] == cohort}
   end
 end
 
@@ -74,7 +98,7 @@ end
 students = input_students
 puts print_header
 puts
-puts print(students)
+puts print
 puts
 puts print_footer(students)
 puts "-----------------------------------------------------------"
@@ -83,3 +107,5 @@ puts print_name_starting_with
 puts "-----------------------------------------------------------"
 puts
 puts print_name_short
+puts "-----------------------------------------------------------"
+puts
