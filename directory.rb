@@ -32,7 +32,12 @@ def input_students
     country = gets.chomp
 
     $students << {name: name, cohort: cohort, country: country}
+    if $students.count == 1
+      puts "There is #{$students.count} student"
+    else
       puts "There are now #{$students.count} students"
+      puts
+    end
       puts
       puts "Please enter another name"
       name = gets.chomp
@@ -91,7 +96,11 @@ def print
 end
 
 def print_footer(students)
-  puts "Overall, there are #{students.count} great students."
+  if students.count == 1
+    puts "Overall, there is #{students.count} student."
+  else
+    puts "Overall, there are #{students.count} students."
+  end
 end
 
 
