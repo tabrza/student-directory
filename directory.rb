@@ -20,6 +20,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Filter students by letter"
   puts "4. Filter students by length"
+  puts "5. Save student list"
   puts "9. Exit"
 end
 
@@ -45,6 +46,11 @@ def process(selection)
     puts
   when "4"
     puts print_name_short
+    puts "-----------------------------------------------------------"
+    puts
+  when "5"
+    puts save_students
+    puts "Student list saved"
     puts "-----------------------------------------------------------"
     puts
   when"9"
@@ -91,6 +97,15 @@ def input_students
   $students
 end
 
+def save_students
+  file = File.open("students.csv", "w")
+  $students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+end
 
 def print_name_starting_with
   if $students.count > 0
