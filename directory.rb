@@ -12,7 +12,7 @@ def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
   puts "Please enter the name (if no name is entered, will move forward to summary)"
-  name = gets.chomp
+  name = gets.strip
   # puts "Which cohort do they belong to?"
   # cohort = gets.chomp
   # puts "Country of origin?"
