@@ -8,6 +8,42 @@ $country = []
 #   end
 
 
+def interactive_menu
+  students = []
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "3. Filter students by letter"
+    puts "4. Filter students by length"
+    puts "9. Exit"
+    selection = gets.chomp
+    case selection
+    when "1"
+      students = input_students
+    when"2"
+      puts print_header
+      puts
+      puts print
+      puts
+      puts print_footer(students)
+      puts "-----------------------------------------------------------"
+      puts
+    when "3"
+      puts print_name_starting_with
+      puts "-----------------------------------------------------------"
+      puts
+    when "4"
+      puts print_name_short
+      puts "-----------------------------------------------------------"
+      puts
+    when"9"
+      exit
+    else
+      "Please input a correct command"
+    end
+  end
+end
+
 def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
@@ -111,18 +147,4 @@ def print_footer(students)
   end
 end
 
-
-students = input_students
-puts print_header
-puts
-puts print
-puts
-puts print_footer(students)
-puts "-----------------------------------------------------------"
-puts
-puts print_name_starting_with
-puts "-----------------------------------------------------------"
-puts
-puts print_name_short
-puts "-----------------------------------------------------------"
-puts
+puts interactive_menu
