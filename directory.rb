@@ -21,6 +21,7 @@ def print_menu
   puts "3. Filter students by letter"
   puts "4. Filter students by length"
   puts "5. Save student list"
+  puts "6. Load students"
   puts "9. Exit"
 end
 
@@ -51,6 +52,11 @@ def process(selection)
   when "5"
     puts save_students
     puts "Student list saved"
+    puts "-----------------------------------------------------------"
+    puts
+  when "6"
+    puts load_students
+    puts "Student list loaded successfully"
     puts "-----------------------------------------------------------"
     puts
   when"9"
@@ -103,6 +109,15 @@ def save_students
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
+  end
+  file.close
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    $students << {name: name, cohort: cohort.to_sym}
   end
   file.close
 end
