@@ -47,17 +47,21 @@ end
 
 
 def print_name_starting_with
-  puts "Please type the letter of which students you want to filter out"
-  filter = gets.chomp.downcase
-  puts "The result of filtering by #{filter} is: ".center(50)
-  puts $students.select { |student| student[:name].start_with?(filter) }
+  if $students.count > 0
+    puts "Please type the letter of which students you want to filter out"
+    filter = gets.chomp.downcase
+    puts "The result of filtering by #{filter} is: ".center(50)
+    puts $students.select { |student| student[:name].start_with?(filter) }
+  end
 end
 
 def print_name_short
-  puts "By what length would you like to filter students?"
-  size = gets.chomp.to_i
-  puts "The result of filtering by #{size} is: ".center(50)
-  puts $students.select { |student| student[:name].size <= size }
+  if $students.count > 0
+    puts "By what length would you like to filter students?"
+    size = gets.chomp.to_i
+    puts "The result of filtering by #{size} is: ".center(50)
+    puts $students.select { |student| student[:name].size <= size }
+  end
 end
 
 def print_by_cohort
@@ -86,12 +90,16 @@ def print
   # students.each_with_index do |student, index|
   #   puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)"
   # end
-  list = []
-  $students.map do |student|
-    list << student[:cohort] if !list.include?(student[:cohort])
-  end
-  list.each do |cohort|
-    $students.each_with_index {|student,index| puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)".center(60) if student[:cohort] == cohort}
+  if $students.count > 0
+    list = []
+    $students.map do |student|
+      list << student[:cohort] if !list.include?(student[:cohort])
+    end
+    list.each do |cohort|
+      $students.each_with_index {|student,index| puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)".center(60) if student[:cohort] == cohort}
+    end
+  else
+    "There are no students recorded"
   end
 end
 
