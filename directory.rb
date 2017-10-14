@@ -9,38 +9,48 @@ $country = []
 
 
 def interactive_menu
-  students = []
   loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "3. Filter students by letter"
-    puts "4. Filter students by length"
-    puts "9. Exit"
-    selection = gets.chomp
-    case selection
-    when "1"
-      students = input_students
-    when"2"
-      puts print_header
-      puts
-      puts print
-      puts
-      puts print_footer(students)
-      puts "-----------------------------------------------------------"
-      puts
-    when "3"
-      puts print_name_starting_with
-      puts "-----------------------------------------------------------"
-      puts
-    when "4"
-      puts print_name_short
-      puts "-----------------------------------------------------------"
-      puts
-    when"9"
-      exit
-    else
-      "Please input a correct command"
-    end
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Filter students by letter"
+  puts "4. Filter students by length"
+  puts "9. Exit"
+end
+
+def show_students
+  puts print_header
+  puts
+  puts print_students_list
+  puts
+  puts print_footer($students)
+  puts "-----------------------------------------------------------"
+  puts
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when"2"
+    show_students
+  when "3"
+    puts print_name_starting_with
+    puts "-----------------------------------------------------------"
+    puts
+  when "4"
+    puts print_name_short
+    puts "-----------------------------------------------------------"
+    puts
+  when"9"
+    exit
+  else
+    "Please input a correct command"
   end
 end
 
@@ -122,7 +132,7 @@ def print_header
   puts "-----------".center(50)
 end
 
-def print
+def print_students_list
   # students.each_with_index do |student, index|
   #   puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)"
   # end
