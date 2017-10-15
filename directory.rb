@@ -83,13 +83,13 @@ def input_students
     else
       until $cohort.include?(cohort)
         puts "Please enter a correct month e.g. January"
-        cohort = STDIN.gets.chomp.capitalize.to_sym
+        cohort = STDIN.gets.chomp.capitalize
       end
     end
     puts "Country of origin?"
     country = STDIN.gets.chomp
 
-    $students << {name: name, cohort: cohort, country: country}
+    student_to_array(name,cohort)
     if $students.count == 1
       puts "There is #{$students.count} student"
     else
@@ -101,6 +101,10 @@ def input_students
       name = STDIN.gets.chomp
   end
   $students
+end
+
+def student_to_array(name,cohort)
+  $students << {name: name, cohort: cohort.to_sym}
 end
 
 def save_students
@@ -117,7 +121,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    $students << {name: name, cohort: cohort.to_sym}
+    student_to_array(name,cohort)
   end
   file.close
 end
