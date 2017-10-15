@@ -8,6 +8,7 @@ $country = []
 #--------------------------------------------------------------------------------------#
 
 def interactive_menu
+  try_load_students
   loop do
     print_menu
     process(STDIN.gets.chomp)
@@ -104,6 +105,13 @@ def student_to_array(name,cohort)
   $students << {name: name, cohort: cohort.to_sym}
 end
 
+def read_file(filename)
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    student_to_array(name,cohort)
+  end
+end
 
 
 #--------------------------------------------------------------------------------------#
@@ -111,7 +119,9 @@ end
 #--------------------------------------------------------------------------------------#
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please advise file name:"
+  file_name = STDIN.gets.chomp + ".csv"
+  file = File.open(file_name, "w")
   $students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -120,13 +130,16 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    student_to_array(name,cohort)
+def load_students
+  puts "Please advise file name:"
+  file_name = STDIN.gets.chomp
+  if File.exist?(file_name)
+    read_file(file_name)
+    puts "Successfully loaded #{file_name} with #{$students.count} students"
+  else
+    read_file("students.csv")
+    puts "Could not find file, loaded students.csv intead with #{$students.count} students"
   end
-  file.close
 end
 
 def try_load_students
