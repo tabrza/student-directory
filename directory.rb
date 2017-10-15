@@ -106,10 +106,11 @@ def student_to_array(name,cohort)
 end
 
 def read_file(filename)
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    student_to_array(name,cohort)
+  file = File.open(filename, "r") do |f|
+    f.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      student_to_array(name,cohort)
+    end
   end
 end
 
@@ -121,13 +122,13 @@ end
 def save_students
   puts "Please advise file name:"
   file_name = STDIN.gets.chomp + ".csv"
-  file = File.open(file_name, "w")
-  $students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  file = File.open(file_name, "w") do |f|
+    $students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      f.puts csv_line
+    end
   end
-  file.close
 end
 
 def load_students
