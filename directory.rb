@@ -2,11 +2,10 @@ $students = []
 $cohort = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
 $country = []
 
-# cohort = gets.chomp.capitalize
-#   if cohort.to_sym != $cohort.each
-#     puts "Please enter a correct month. e.g. January"
-#   end
 
+#--------------------------------------------------------------------------------------#
+#------------------MENU----------------------------------------------------------------#
+#--------------------------------------------------------------------------------------#
 
 def interactive_menu
   loop do
@@ -23,16 +22,6 @@ def print_menu
   puts "5. Save student list"
   puts "6. Load students"
   puts "9. Exit"
-end
-
-def show_students
-  puts print_header
-  puts
-  puts print_students_list
-  puts
-  puts print_footer($students)
-  puts "-----------------------------------------------------------"
-  puts
 end
 
 def process(selection)
@@ -66,15 +55,15 @@ def process(selection)
   end
 end
 
+#--------------------------------------------------------------------------------------#
+#------------------USER INPUT----------------------------------------------------------#
+#--------------------------------------------------------------------------------------#
+
 def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
   puts "Please enter the name (if no name is entered, will move forward to summary)"
   name = STDIN.gets.strip
-  # puts "Which cohort do they belong to?"
-  # cohort = gets.chomp
-  # puts "Country of origin?"
-  # country = gets.chomp
   while !name.empty? do
     puts "Which cohort do they belong to?"
     cohort = STDIN.gets.chomp.capitalize.to_sym
@@ -88,14 +77,8 @@ def input_students
     end
     puts "Country of origin?"
     country = STDIN.gets.chomp
-
     student_to_array(name,cohort)
-    if $students.count == 1
-      puts "There is #{$students.count} student"
-    else
-      puts "There are now #{$students.count} students"
-      puts
-    end
+    singular_to_plural
       puts
       puts "Please enter another name"
       name = STDIN.gets.chomp
@@ -103,9 +86,29 @@ def input_students
   $students
 end
 
+
+#--------------------------------------------------------------------------------------#
+#------------------MISCELLANEOUS-------------------------------------------------------#
+#--------------------------------------------------------------------------------------#
+
+def singular_to_plural
+  if $students.count == 1
+    puts "There is #{$students.count} student"
+  else
+    puts "There are now #{$students.count} students"
+    puts
+  end
+end
+
 def student_to_array(name,cohort)
   $students << {name: name, cohort: cohort.to_sym}
 end
+
+
+
+#--------------------------------------------------------------------------------------#
+#------------------LOADING/SAVING------------------------------------------------------#
+#--------------------------------------------------------------------------------------#
 
 def save_students
   file = File.open("students.csv", "w")
@@ -138,6 +141,20 @@ def try_load_students
     end
 end
 
+#--------------------------------------------------------------------------------------#
+#------------------PRINTING OPTIONS ---------------------------------------------------#
+#--------------------------------------------------------------------------------------#
+
+def show_students
+  puts print_header
+  puts
+  puts print_students_list
+  puts
+  puts print_footer($students)
+  puts "-----------------------------------------------------------"
+  puts
+end
+
 def print_name_starting_with
   if $students.count > 0
     puts "Please type the letter of which students you want to filter out"
@@ -156,32 +173,12 @@ def print_name_short
   end
 end
 
-def print_by_cohort
-  #puts "List by cohort:"
-  #month = gets.chomp.capitalize.to_sym
-  #puts "The following list is filtered per the month of #{month}:".center(50)
-  # puts $cohort.map { |cohort| cohort[:cohort.to_s] == month}
-
-  #   cohorts_list = []
-  # $students.map do |student|
-  #   cohorts_list << student[:cohort] if !cohorts_list.include?(student[:cohort])
-  # end
-  # # for each cohort
-  # cohorts_list.each do |cohort|
-  #   # iterate over students list and print students from that cohort
-  #   $students.each_with_index {|student,index| puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)".center(60) if student[:cohort] == cohort}
-  # end
-end
-
 def print_header
   puts "The students of this Academy".center(50)
   puts "-----------".center(50)
 end
 
 def print_students_list
-  # students.each_with_index do |student, index|
-  #   puts "(#{index+1}) #{student[:name]} (#{student[:cohort]} cohort)"
-  # end
   if $students.count > 0
     list = []
     $students.map do |student|
