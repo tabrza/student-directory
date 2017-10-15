@@ -11,7 +11,7 @@ $country = []
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -70,24 +70,24 @@ def input_students
   puts "Hit return twice to finish".center(50)
   puts "-------------------------".center(50)
   puts "Please enter the name (if no name is entered, will move forward to summary)"
-  name = gets.strip
+  name = STDIN.gets.strip
   # puts "Which cohort do they belong to?"
   # cohort = gets.chomp
   # puts "Country of origin?"
   # country = gets.chomp
   while !name.empty? do
     puts "Which cohort do they belong to?"
-    cohort = gets.chomp.capitalize.to_sym
+    cohort = STDIN.gets.chomp.capitalize.to_sym
     if cohort.empty?
       cohort = Time.new.strftime("%B").to_sym
     else
       until $cohort.include?(cohort)
         puts "Please enter a correct month e.g. January"
-        cohort = gets.chomp.capitalize.to_sym
+        cohort = STDIN.gets.chomp.capitalize.to_sym
       end
     end
     puts "Country of origin?"
-    country = gets.chomp
+    country = STDIN.gets.chomp
 
     $students << {name: name, cohort: cohort, country: country}
     if $students.count == 1
@@ -98,7 +98,7 @@ def input_students
     end
       puts
       puts "Please enter another name"
-      name = gets.chomp
+      name = STDIN.gets.chomp
   end
   $students
 end
@@ -113,8 +113,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     $students << {name: name, cohort: cohort.to_sym}
@@ -122,10 +122,22 @@ def load_students
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+      puts "Loaded #{$students.count} from #{filename}"
+    else
+      puts "Sorry #{filename} does not exist."
+      exit
+    end
+end
+
 def print_name_starting_with
   if $students.count > 0
     puts "Please type the letter of which students you want to filter out"
-    filter = gets.chomp.downcase
+    filter = STDIN.gets.chomp.downcase
     puts "The result of filtering by #{filter} is: ".center(50)
     puts $students.select { |student| student[:name].start_with?(filter) }
   end
@@ -134,7 +146,7 @@ end
 def print_name_short
   if $students.count > 0
     puts "By what length would you like to filter students?"
-    size = gets.chomp.to_i
+    size = STDIN.gets.chomp.to_i
     puts "The result of filtering by #{size} is: ".center(50)
     puts $students.select { |student| student[:name].size <= size }
   end
@@ -187,4 +199,5 @@ def print_footer(students)
   end
 end
 
+puts try_load_students
 puts interactive_menu
